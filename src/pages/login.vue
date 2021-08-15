@@ -48,12 +48,7 @@ export default {
       }
     },
     computed:{
-      ...mapGetters('poll',['getMessage'])
-    },
-    watch:{
-      message(){
-        this.message = this.getMessage;
-      }
+      ...mapGetters('poll',['getMessage', 'isLoggedIn'])
     },
     methods:{
       ...mapActions('poll',['loginUser']),
@@ -63,6 +58,11 @@ export default {
         if(this.userName){
           if(this.password){
             this.loginUser({userName:this.userName,password:this.password})
+            this.message = this.getMessage;
+            this.userName = '';
+            this.password = '';
+            console.log(this.isLoggedIn)
+            this.$router.push('/');
           }
           else{
             this.message = 'Password can not be empty'

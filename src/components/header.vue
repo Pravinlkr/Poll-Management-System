@@ -7,19 +7,20 @@
     <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
     <b-collapse id="nav-collapse" is-nav>
-      <b-navbar-nav>
+      <b-navbar-nav v-if="!isLoggedIn">
         <b-nav-item tag="router-link" :to="{ path: '/login' }">Login</b-nav-item>
       </b-navbar-nav>
 
       <!-- Right aligned nav items -->
-      <b-navbar-nav class="ml-auto">
+      <b-navbar-nav class="ml-auto" v-if="isLoggedIn">
         <b-nav-item-dropdown right>
           <!-- Using 'button-content' slot -->
           <template #button-content>
-            <em>User</em>
+            <em>My Account</em>
           </template>
-          <b-dropdown-item tag="router-link" :to="{ path: '/adduser' }">Add User</b-dropdown-item>
-          <b-dropdown-item href="#">Sign Out</b-dropdown-item>
+          <b-dropdown-item tag="router-link" :to="{ path: '/adduser' }">User</b-dropdown-item>
+          <b-dropdown-item href="#">Poll</b-dropdown-item>
+          <b-dropdown-item @click="logOut()">Log Out</b-dropdown-item>
         </b-nav-item-dropdown>
       </b-navbar-nav>
     </b-collapse>
@@ -29,7 +30,14 @@
 </template>
 
 <script>
+import {mapGetters, mapActions} from 'vuex'
 export default {
-    name:'Header'
+    name:'Header',
+    computed:{
+      ...mapGetters('poll',['isLoggedIn'])
+    },
+    methods:{
+      ...mapActions('poll',['logOut'])
+    }
 }
 </script>

@@ -2,17 +2,23 @@ import axios from 'axios'
 
 const state = {
     loggedIN:false,
-    role:'',
     allPolls:[],
+    role: '',
     message:''
 }
 const getters = {
     getPolls(state){
-        console.log(state.allPolls)
         return state.allPolls;
     },
     getMessage(state){
         return state.message;
+    },
+    isLoggedIn(state){
+        var localUserDetails = JSON.parse(localStorage.getItem('LoginCredentials'));
+        if(localUserDetails){
+            state.loggedIN = localUserDetails.loggedIN;
+        }
+        return state.loggedIN
     }
 }
 const mutations = {
@@ -21,14 +27,18 @@ const mutations = {
         return state.allPolls
     },
     LOGIN_USER(state,payload){
-        if(payload == 0){
-            state.loggedIN = true
-            state.message = 'Logged In Successfully'
-        }
-        else{
-            state.loggedIN = false
-            state.message = 'Incorrect Username or Password'
-        }
+        state.loggedIN = true;
+        state.role = payload.role;
+        state.message = 'Logged In Successfully';
+
+        let user = {userDetails: payload,loggedIN: true}
+        const parsed = JSON.stringify(user);
+        localStorage.setItem('LoginCredentials',parsed);
+        
+    },
+    LOGOUT(state){
+        state.loggedIN = false
+        localStorage.clear();
     }
 }
 const actions = {
@@ -43,14 +53,30 @@ const actions = {
             console.log(error)
         })
     },
-    loginUser({commit},state, payload){
+    loginUser({commit}, payload){
         axios.get(`https://secure-refuge-14993.herokuapp.com/login?username=${payload.userName}&password=${payload.password}`)
         .then(response=>{
-            commit('LOGIN_USER', response.data.error);
+            if(response.data.error == 0){
+                axios.get(`https://secure-refuge-14993.herokuapp.com/list_users`)
+                .then(response=>{
+                    let i=0;
+                    for(i=0; i<response.data.data.length; i++){
+                        if(response.data.data[i].username == payload.userName && response.data.data[i].password == payload.password){
+                            commit('LOGIN_USER', response.data.data[i])
+                        }
+                    }
+                })
+                .catch(error=>{
+                    console.log(error)
+                })
+            }
         })
         .catch(error=>{
           console.log(error)
         })
+    },
+    logOut({commit}){
+        commit('LOGOUT');
     }
 }
 
