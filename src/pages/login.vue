@@ -1,13 +1,9 @@
 <template>
-  <h1>Login page</h1>
+ <h2>login page</h2>
 </template>
 
 <script>
-export default {
-    name:'Login'
-}
+  export default {
+      name:'Login',
+  }
 </script>
-
-<style>
-
-</style>
