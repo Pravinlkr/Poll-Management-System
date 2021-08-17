@@ -4,6 +4,8 @@ import Login from '../pages/login.vue'
 import Home from '../pages/Home.vue'
 import addUser from '../pages/addUser.vue'
 import Poll from '../pages/poll.vue'
+import createAccount from '../pages/createAccount.vue'
+import Vote from '../pages/Vote.vue'
 
 Vue.use(VueRouter)
 
@@ -59,7 +61,9 @@ const routes = [
     { 'path': '/', name: Home, beforeEnter : guardMyroute, component: Home },
     { 'path': '/login', name: Login, beforeEnter:isLoggedInOrNot, component: Login},
     { 'path': "/poll", name:Poll, beforeEnter : guardMyroute, component: Poll},
-    { 'path': "/adduser", name:addUser, beforeEnter : guardMyroute, component: addUser}
+    { 'path': "/adduser", name:addUser, beforeEnter : guardMyroute, component: addUser},
+    { 'path': "/createAccount", name:createAccount, component: createAccount},
+    { 'path': "/vote", name:Vote, component: Vote}
 ]
 
 export const router = new VueRouter({

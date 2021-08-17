@@ -63,6 +63,9 @@ const mutations = {
     ADD_NEW_OPTION(state){
         state.message = 'new Options Added'
     },
+    VOTE_A_POLL(state){
+        state.message = 'Voted Successfully'
+    },
     DELETE_POLL(state,payload){
         state.message = payload.id + 'Id no poll is deleted'
     }
@@ -176,6 +179,17 @@ const actions = {
             console.log(error)
         })
         commit('DELETE_POLL', payload)
+    },
+    voteApoll({commit,dispatch},payload){
+        axios.get(`https://secure-refuge-14993.herokuapp.com/do_vote?id=${payload.id}&option_text=${payload.option_text}`)
+        .then(response=>{
+            console.log(response)
+            commit('VOTE_A_POLL')
+            dispatch('fetchPollWithId',payload.id)
+        })
+        .catch(error=>{
+            console.log(error)
+        })
     }
 }
 
