@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import Login from '../pages/login.vue'
 import Home from '../pages/Home.vue'
 import addUser from '../pages/addUser.vue'
+import Poll from '../pages/poll.vue'
 
 Vue.use(VueRouter)
 
@@ -17,11 +18,11 @@ function guardMyroute(to, from, next)
  }
   
 if(isAuthenticated) {
-  if(to.fullPath == '/' || to.fullPath == '/profile'){
-    next(); // allow to enter route
+  if(to.fullPath == '/login'){
+    next('/'); // allow to enter route
   }
   else{
-    next('/')
+    next()
   }
  } else{
   next('/login'); // go to '/login';
@@ -45,13 +46,19 @@ function isLoggedInOrNot(to, from, next){
    }
 
   } else{
-   next('/'); // go to '/';
+   if(to.fullPath == '/login'){
+     next('/')
+   }
+   else{
+     next()
+   }
   }
 }
 
 const routes = [
     { 'path': '/', name: Home, beforeEnter : guardMyroute, component: Home },
     { 'path': '/login', name: Login, beforeEnter:isLoggedInOrNot, component: Login},
+    { 'path': "/poll", name:Poll, beforeEnter : guardMyroute, component: Poll},
     { 'path': "/adduser", name:addUser, beforeEnter : guardMyroute, component: addUser}
 ]
 

@@ -19,8 +19,8 @@
             <em>My Account</em>
           </template>
           <b-dropdown-item tag="router-link" :to="{ path: '/adduser' }">User</b-dropdown-item>
-          <b-dropdown-item href="#">Poll</b-dropdown-item>
-          <b-dropdown-item @click="logOut()">Log Out</b-dropdown-item>
+          <b-dropdown-item :to="{path:'/poll'}">Poll</b-dropdown-item>
+          <b-dropdown-item @click="logginout()">Log Out</b-dropdown-item>
         </b-nav-item-dropdown>
       </b-navbar-nav>
     </b-collapse>
@@ -37,7 +37,11 @@ export default {
       ...mapGetters('poll',['isLoggedIn'])
     },
     methods:{
-      ...mapActions('poll',['logOut'])
+      ...mapActions('poll',['logOut']),
+      logginout(){
+        this.logOut();
+        this.$router.push('/login')
+      }
     }
 }
 </script>
