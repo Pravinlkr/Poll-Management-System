@@ -9,6 +9,9 @@
         <b-card-text v-for="(option, index) in polls.options" v-bind:key="index">
           {{option.option}}
         </b-card-text>
+        <b-card-text>
+          <vote :editId="polls._id"></vote>
+        </b-card-text>
       </b-card>
     </b-col>
 
@@ -19,9 +22,13 @@
 </template>
 
 <script>
+import Vote from './Vote.vue'
 import {mapActions, mapGetters} from 'vuex'
 export default {
     name:'Home',
+    components:{
+      Vote
+    },
     computed:{
       ...mapGetters('poll',['getPolls'])
     },

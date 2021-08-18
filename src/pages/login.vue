@@ -18,9 +18,11 @@
                     <b-card-text>
                         {{message}}
                     </b-card-text>
+                    <b-card-text>
+                       <router-link :to="{path:'/createAccount'}"> Create An Account </router-link>
+                    </b-card-text>
                 </b-card>
             </b-col>
-
         </b-row>
     </b-container>
 </div>
